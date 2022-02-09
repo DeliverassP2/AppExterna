@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<nomines>
+    <nombre>Nomina</nombre>
+    <nomines>
+        <nomina IDNomina="11113">
+            <DNIRep>x12345678</DNIRep>
+            <Nom>Josep</Nom>
+            <kmInicials>132700</kmInicials>
+            <kmFinals>134000</kmFinals>
+            <kmTotals>1300</kmTotals>
+            <diaInici>2022-02-07</diaInici>
+            <diaFinal>2022-02-28</diaFinal>
+            <souDia>22542.0</souDia>
+        </nomina>
+    </nomines>
+</nomines>

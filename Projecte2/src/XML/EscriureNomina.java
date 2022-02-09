@@ -1,73 +1,95 @@
 package XML;
 
+import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-
-
 public class EscriureNomina {
-	public static void main(String[] args) throws JAXBException, ClassNotFoundException, IOException {
-		JAXBContext context = JAXBContext.newInstance(LlistaNomines.class);
-		Marshaller marshaller = context.createMarshaller();
-		LlistaNomines LlistaNomines = new LlistaNomines();
-		
-		ArrayList <Nomina> nomines = new ArrayList();
-		
-		Nomina nomina = new Nomina();
-		nomina.setIDNomina("id1");
-		nomina.setDNIRep("x8922312");
-		nomina.setKmInicials("111992");
-		nomina.setKmFinals("112500");
-		nomina.setDia("21/02/2022");
-		nomina.setSouDia("50");
-		LlistaNomines.setNomina(nomines);
-		/*
-		Class.forName("org.postgresql.Driver");
-		try (Connection connection = DriverManager.getConnection("jdbc:postgresql://192.168.1.203:5432/Deliverass",
-					"postgres", "Fat/3232")){
-			
-			
-			String select = "SELECT * from \"DEL_nomines\";";
-			
-			Statement st = connection.createStatement();
+	public static final Date dateyear = new Date();
+	public static final SimpleDateFormat formatteryear = new SimpleDateFormat("yyyy");
+	public static final String year = formatteryear.format(dateyear);
+	public static final Date datemonth = new Date();
+	public static final SimpleDateFormat formattermonth = new SimpleDateFormat("M");
+	public static final String month = formattermonth.format(datemonth);
+
+	public static void main(String[] args) {
+
+		System.out.println(File.listRoots()[0]);
+
+		try {
+			JAXBContext cont = JAXBContext.newInstance(LlistaNomines.class);
+			Marshaller marsh = cont.createMarshaller();
+			LlistaNomines ln = new LlistaNomines();
+			ln.setNombre("Nomina");
+
+			ArrayList<Nomina> nomines = new ArrayList();
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://192.168.1.203:5432/Deliverass", "postgres",
+					"Fat/3232");
+
+			String select = "SELECT \r\n" + "	max(\"Id_nomina\") \"Id_nomina\",\r\n" + "	\"DniRep\",\r\n"
+					+ "	\"nom\",\r\n" + "	min(\"KmInicials\") \"kmInicials\",\r\n"
+					+ "	max(\"KmFinals\") \"kmFinals\",\r\n" + "	min(\"Data\") \"DataInici\",\r\n"
+					+ "	max(\"Data\") \"DataFinal\",\r\n" + "	max(\"euroKm\") \"euroKm\"\r\n"
+					+ "FROM \"DEL_nomines\"\r\n" + "INNER JOIN \"DEL_repartidors\" ON\r\n"
+					+ "\"DEL_nomines\".\"DniRep\" = \"DEL_repartidors\".\"Dni\"\r\n"
+					+ "WHERE EXTRACT(MONTH FROM NOW()) = EXTRACT(MONTH FROM \"Data\")\r\n"
+					+ "GROUP BY \"DniRep\", \"nom\";";
+
+			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(select);
-			
-			while(rs.next()) {
-				Nomina nomina1 = new Nomina();
-				nomina1.setIDNomina(rs.getString("id_nomina"));
-				nomina1.setDNIRep(rs.getString("DniRep"));
-				nomina1.setKmInicials(rs.getString("KmInicials"));
-				nomina1.setKmFinals(rs.getString("KmFinals"));
-				nomina1.setDia(rs.getString("KmDia"));
-				nomina1.setDia(rs.getString("Data"));
-				nomina1.setSouDia(rs.getString("SouDia"));
-				
-				LlistaNomines.setNomina(nomines);
-				
-				
+			while (rs.next()) {
+				Nomina nomina = new Nomina();
+
+				int kmTotals = rs.getInt("KmFinals") - rs.getInt("KmInicials");
+
+				nomina.setIDNomina(rs.getString("Id_nomina"));
+				nomina.setDNIRep(rs.getString("DniRep"));
+				nomina.setNom(rs.getString("nom"));
+				nomina.setKmInicials(rs.getInt("kmInicials"));
+				nomina.setKmFinals(rs.getInt("kmFinals"));
+				nomina.setKmTotals(kmTotals);
+				nomina.setDiaInici(rs.getString("DataInici"));
+				nomina.setDiaFinal(rs.getString("DataFinal"));
+				nomina.setSouDia(rs.getDouble("euroKm") * kmTotals);
+				nomines.add(nomina);
+
+				ln.setNomines(nomines);
+
+				File ruta = new File(
+						File.listRoots()[0] + "/Nomines/" + rs.getString("DniRep") + "/" + year + "/" + month + "/");
+				if (!ruta.exists()) {
+					ruta.mkdirs();
+				}
+
+				marsh.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+				int i = 1;
+				File existent = new File(
+						ruta + "/" + rs.getString("DniRep") + "_" + month + "_" + year + "_" + i + ".xml");
+				if (existent.exists()) {
+					i++;
+					marsh.marshal(ln, new File(
+							ruta + "/" + rs.getString("DniRep") + "_" + month + "_" + year + "_" + i + ".xml"));
+				}else {
+					marsh.marshal(ln, new File(
+							ruta + "/" + rs.getString("DniRep") + "_" + month + "_" + year + "_" + i + ".xml"));
+				}
+
 			}
-			*/
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			marshaller.marshal(LlistaNomines, System.out);
-			marshaller.marshal(LlistaNomines, new FileWriter("Nomines.xml"));
-			
-	//	}catch(SQLException e) {
-			
-	//		e.printStackTrace();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		
-		
-		
+
 	}
-//}
+
+}

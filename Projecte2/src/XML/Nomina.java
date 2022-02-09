@@ -6,21 +6,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "nomina")
-@XmlType(propOrder = {"IDNomina","DNIRep","kmInicials","kmFinals","kmDia","dia","souDia"})
+@XmlType(propOrder = { "IDNomina", "DNIRep", "nom", "kmInicials", "kmFinals", "kmTotals", "diaInici", "diaFinal", "souDia" })
 public class Nomina {
+
 	private String IDNomina;
 	private String DNIRep;
-	private String kmInicials;
-	private String kmFinals;
-	private String kmDia;
-	private String dia;
-	private String souDia;
-	
+	private String nom;
+	private int kmInicials;
+	private int kmFinals;
+	private int kmTotals;
+	private String diaInici;
+	private String diaFinal;
+	private double souDia;
+
 	public Nomina() {
-		
+		super();
 	}
-	
-	@XmlElement(name="IDNomina")
+
+	@XmlAttribute(name="IDNomina")
 	public String getIDNomina() {
 		return IDNomina;
 	}
@@ -28,7 +31,7 @@ public class Nomina {
 	public void setIDNomina(String iDNomina) {
 		IDNomina = iDNomina;
 	}
-	
+
 	@XmlElement(name="DNIRep")
 	public String getDNIRep() {
 		return DNIRep;
@@ -38,50 +41,69 @@ public class Nomina {
 		DNIRep = dNIRep;
 	}
 	
+	@XmlElement(name="Nom")	
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
 	@XmlElement(name="kmInicials")
-	public String getKmInicials() {
+	public int getKmInicials() {
 		return kmInicials;
 	}
 
-	public void setKmInicials(String kmInicials) {
+	public void setKmInicials(int kmInicials) {
 		this.kmInicials = kmInicials;
 	}
-	
+
 	@XmlElement(name="kmFinals")
-	public String getKmFinals() {
+	public int getKmFinals() {
 		return kmFinals;
 	}
 
-	public void setKmFinals(String kmFinals) {
+	public void setKmFinals(int kmFinals) {
 		this.kmFinals = kmFinals;
 	}
 
-	@XmlElement(name="kmDia")
-	public String getKmDia() {
-		return kmDia;
+	@XmlElement(name="kmTotals")
+	public int getKmTotals() {
+		return kmTotals;
 	}
 
-	public void setKmDia(String kmDia) {
-		this.kmDia = kmDia;
+	public void setKmTotals(int kmTotals) {
+		this.kmTotals = kmTotals;
 	}
 
-	@XmlElement(name="dia")
-	public String getDia() {
-		return dia;
+	@XmlElement(name="diaInici")
+	public String getDiaInici() {
+		return diaInici;
 	}
 
-	public void setDia(String dia) {
-		this.dia = dia;
+	public void setDiaInici(String diaInici) {
+		this.diaInici = diaInici;
+	}
+	
+	@XmlElement(name="diaFinal")
+	public String getDiaFinal() {
+		return diaFinal;
+	}
+
+	public void setDiaFinal(String diaFinal) {
+		this.diaFinal = diaFinal;
 	}
 
 	@XmlElement(name="souDia")
-	public String getSouDia() {
+	public double getSouDia() {
 		return souDia;
 	}
 
-	public void setSouDia(String souDia) {
-		this.souDia = souDia;
+	public void setSouDia(double d) {
+		this.souDia = d;
 	}
+
 	
 	
 }
