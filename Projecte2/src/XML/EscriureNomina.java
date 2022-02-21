@@ -22,6 +22,7 @@ public class EscriureNomina {
 	public static final SimpleDateFormat formattermonth = new SimpleDateFormat("M");
 	public static final String month = formattermonth.format(datemonth);
 
+
 	public static void main(String[] args) {
 
 		System.out.println(File.listRoots()[0]);
@@ -31,8 +32,6 @@ public class EscriureNomina {
 			Marshaller marsh = cont.createMarshaller();
 			LlistaNomines ln = new LlistaNomines();
 			ln.setNombre("Nomina");
-
-			ArrayList<Nomina> nomines = new ArrayList();
 			Connection conn = DriverManager.getConnection("jdbc:postgresql://192.168.1.203:5432/Deliverass", "postgres",
 					"Fat/3232");
 
@@ -47,6 +46,8 @@ public class EscriureNomina {
 
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(select);
+			ArrayList<Nomina> nomines = new ArrayList();
+
 			while (rs.next()) {
 				Nomina nomina = new Nomina();
 
@@ -79,7 +80,7 @@ public class EscriureNomina {
 					i++;
 					marsh.marshal(ln, new File(
 							ruta + "/" + rs.getString("DniRep") + "_" + month + "_" + year + "_" + i + ".xml"));
-				}else {
+				} else {
 					marsh.marshal(ln, new File(
 							ruta + "/" + rs.getString("DniRep") + "_" + month + "_" + year + "_" + i + ".xml"));
 				}
