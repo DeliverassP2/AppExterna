@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<llistaNomines>
+    <nombre>prova</nombre>
+    <nomines>
+        <nomina>
+            <IDNomina>20</IDNomina>
+            <DNIRep>47681213m</DNIRep>
+            <kmInicials>56000</kmInicials>
+            <kmFinals>61000</kmFinals>
+            <kmDia>5000</kmDia>
+            <souDia>75000</souDia>
+        </nomina>
+        <nomina>
+            <IDNomina>21</IDNomina>
+            <DNIRep>87654321z</DNIRep>
+            <kmInicials>14050</kmInicials>
+            <kmFinals>16004</kmFinals>
+            <kmDia>1954</kmDia>
+            <souDia>29310</souDia>
+        </nomina>
+        <nomina>
+            <IDNomina>17</IDNomina>
+            <DNIRep>x12345678</DNIRep>
+            <kmInicials>134000</kmInicials>
+            <kmFinals>136500</kmFinals>
+            <kmDia>2500</kmDia>
+            <souDia>42500</souDia>
+        </nomina>
+    </nomines>
+</llistaNomines>
